@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.HouseMapper">
+
+	<select id="selectCurrent"
+		resultType="com.ssafy.happyhouse.model.dto.HouseDto">
+		select
+		no, dealAmount, dealYear, dealMonth, dealDay,aptName,
+		dongName
+		from house
+		order by
+		dealYear desc
+		,dealMonth desc
+		,dealDay desc
+		limit 9;
+	</select>
+
+	<select id="selectOne"
+		resultType="com.ssafy.happyhouse.model.dto.HouseDto">
+		SELECT
+		no, aptCode, aptName, dongCode, dongName, dealAmount,
+		dealYear,
+		dealMonth, dealDay, area, floor, type, buildYear, lat, lng,
+		likeCount
+		FROM house
+		WHERE no=#{no} limit 100
+	</select>
+
+	<!-- 페이징 처리 -->
+	<select id="selectList"
+		resultType="com.ssafy.happyhouse.model.dto.HouseDto">
+		SELECT
+		no, aptCode, aptName, dongCode, dongName, lat, lng, dealAmount,
+		dealYear,
+		dealMonth, dealDay, area, floor, type
+		FROM house
+		where aptName
+		LIKE CONCAT('%',#{keyword},'%') or dongName LIKE
+		CONCAT('%',#{keyword},'%')
+		limit #{size}
+		offset #{start}
+		<!-- <if test="keyword != null and keyword != ''"> ORDER BY BNO DESC LIMIT 
+			#{start},#{count}</if> -->
+	</select>
+
+	<!-- 페이징에 필요한 카운트 -->
+	<select id="selectTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		house
+		where aptName LIKE CONCAT('%',#{keyword},'%') or dongName LIKE
+		CONCAT('%',#{keyword},'%')
+	</select>
+	<!-- -->
+
+	<select id="selectDongCodeList"
+		resultType="com.ssafy.happyhouse.model.dto.HouseDto">
+		SELECT
+		dongCode, dongName, dealAmount, area
+		FROM house
+		where
+		dongCode=#{dongCode} limit 100
+		<!-- <if test="keyword != null and keyword != ''"> </if> -->
+	</select>
+
+	<select id="selectAptCodeList"
+		resultType="com.ssafy.happyhouse.model.dto.HouseDto">
+		SELECT
+		aptCode, aptName, dealAmount
+		FROM house
+		where aptCode=#{aptCode}
+		limit 100
+		<!-- <if test="keyword != null and keyword != ''"> </if> -->
+	</select>
+
+	<!-- 관심 매물 등록 -->
+	<insert id="insertLikeHouse" parameterType="int">
+		insert
+		into
+		likeHouse(mno, hno)
+		values(#{mno},#{hno})
+	</insert>
+
+	<update id="updateLikeCountPlus" parameterType="int">
+		update house set
+		likeCount = likeCount + 1 where no = #{hno};
+	</update>
+
+
+	<!-- 회원의 관심 매물 조회 -->
+	<select id="findByLikeHouse"
+		resultType="com.ssafy.happyhouse.model.dto.HouseDto">
+		select
+		no, aptCode, aptName, dongCode, dongName, lat, lng,
+		dealAmount, dealYear,
+		dealMonth, dealDay, area, floor, type, likeCount
+		from house
+		where no in (
+		select
+		hNo
+		from likeHouse
+		where mno=#{mno}
+		)
+	</select>
+
+	<!--회원의 관심 매물 삭제 -->
+	<delete id="deleteLikeHouse" parameterType="int">
+		delete
+		from likeHouse
+		where
+		mno=#{mno} and hno=#{hno}
+	</delete>
+
+	<update id="updateLikeCountMinus" parameterType="int">
+		update house set
+		likeCount = likeCount - 1 where no = #{hno};
+	</update>
+
+	<!-- 관심매물 순위 조회 -->
+	<select id="findByLikeHouseRank"
+		resultType="com.ssafy.happyhouse.model.dto.HouseDto">
+		select
+		no, aptCode, aptName, dongCode, dongName, lat, lng,
+		dealAmount, dealYear,
+		dealMonth, dealDay, area, floor, type, likeCount
+		from house
+		ORDER BY likeCount DESC limit 10
+	</select>
+
+	<select id="countByMonth" resultType="int">
+		select count(*) count from
+		house
+		group by dealMonth order by dealMonth
+	</select>
+
+	<select id="maxAmountByDong"
+		resultType="com.ssafy.happyhouse.model.dto.ChartDto">
+		select dongName, count(*) as count from house group by
+		dongName order by count desc limit 5
+	</select>
+
+	<select id="maxAmountByGu"
+		resultType="com.ssafy.happyhouse.model.dto.ChartDto">
+		select distinct d.gugunName,count(h.no) as count from
+		dongcode d inner join house h
+		using(dongName) group by d.gugunName
+		order by count desc limit 5
+	</select>
+
+	<select id="seoul"
+		resultType="com.ssafy.happyhouse.model.dto.ChartDto">
+		select max(dealAmount) as max, min(dealAmount) as min,
+		round(avg(dealAmount)) as avg,max(buildYear) as bmax, min(buildYear)
+		as bmin,
+		round(avg(area),2) as avgarea,count(*) as count from house
+		where area between #{start} and #{end};
+	</select>
+
+	<select id="seoul40"
+		resultType="com.ssafy.happyhouse.model.dto.ChartDto">
+		select max(dealAmount) as max, min(dealAmount) as min,
+		round(avg(dealAmount)) as avg,max(buildYear) as bmax, min(buildYear)
+		as bmin,
+		round(avg(area),1) as avgarea,count(*) as count from house
+		where area >= #{start};
+	</select>
+
+	<select id="dongper"
+		resultType="com.ssafy.happyhouse.model.dto.ChartDto">
+		select max(dealAmount) as max, min(dealAmount) as min,
+		round(avg(dealAmount),3) as avg,max(buildYear) as bmax, min(buildYear)
+		as bmin,
+		round(avg(area),1) as avgarea,count(*) as count from house
+		where dongName=#{dongName} and area between #{start} and #{end};
+	</select>
+
+	<select id="dongper40"
+		resultType="com.ssafy.happyhouse.model.dto.ChartDto">
+		select max(dealAmount) as max, min(dealAmount) as min,
+		round(avg(dealAmount),3) as avg,max(buildYear) as bmax, min(buildYear)
+		as bmin,
+		round(avg(area),1) as avgarea,count(*) as count from house
+		where dongName=#{dongName} and area >= #{start};
+	</select>
+
+	<select id="guper"
+		resultType="com.ssafy.happyhouse.model.dto.ChartDto">
+		select max(h.dealAmount) as max,
+		min(h.dealAmount) as min,
+		round(avg(h.dealAmount),3) as
+		avg,max(h.buildYear) as bmax,
+		min(h.buildYear)
+		as bmin,
+		round(avg(h.area),1) as
+		avgarea,count(h.dealAmount) as count,
+		h.dongname as dongName,
+		d.gugunname as gugunName from
+		house h inner
+		join dongcode d using
+		(dongname)
+		where h.dongName in (select dongname from dongcode where
+		gugunName=#{gugunName}) and h.area
+		between #{start} and
+		#{end};
+	</select>
+
+	<select id="guper40"
+		resultType="com.ssafy.happyhouse.model.dto.ChartDto">
+		select max(h.dealAmount) as max,
+		min(h.dealAmount) as min,
+		round(avg(h.dealAmount),3) as
+		avg,max(h.buildYear) as bmax,
+		min(h.buildYear)
+		as bmin,
+		round(avg(h.area),1) as
+		avgarea,count(h.dealAmount) as count,
+		h.dongname as dongName,
+		d.gugunname as gugunName from
+		house h inner
+		join dongcode d using
+		(dongname)
+		where h.dongName in (select dongname from dongcode where
+		gugunName=#{gugunName}) and h.area >= #{start}
+	</select>
+</mapper>

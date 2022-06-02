@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.happyhouse.model.mapper.AnswerMapper">
+	
+	<!-- qnum에 해당하는 댓글 조회 -->
+	<select id="list" resultType="com.ssafy.happyhouse.model.dto.AnswerDto">
+		select anum, amid, acontent, createtime
+		from answer
+		where qnum = #{qnum}
+	</select>
+
+	<!-- 답변 정보 등록 -->
+	<insert id="create"
+		parameterType="com.ssafy.happyhouse.model.dto.AnswerDto">
+		insert into answer(
+		amid, acontent, createtime, qnum
+		) values (
+		#{amid}, #{acontent}, now(), #{qnum}
+		)
+	</insert>
+
+	<!-- 댓글 정보 수정 -->
+	<update id="modify"
+		parameterType="com.ssafy.happyhouse.model.dto.AnswerDto">
+		<![CDATA[
+		update answer
+		set acontent = #{acontent},amodifywriter=#{amodifywriter}, amodifytime=NOW()
+		where anum = #{anum}
+		]]>
+	</update>
+
+	<!-- anup에 따른 답변 정보 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete
+		from answer
+		where
+		anum = #{anum}
+	</delete>
+	
+	<select id="selectOne"
+		resultType="com.ssafy.happyhouse.model.dto.AnswerDto">
+		select anum, amid, acontent, qnum, createtime from
+		answer where anum=#{anum}
+	</select>
+</mapper>

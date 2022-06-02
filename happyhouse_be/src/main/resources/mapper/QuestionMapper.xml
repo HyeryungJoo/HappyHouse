@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.happyhouse.model.mapper.QuestionMapper">
+	<insert id="insert"
+		parameterType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		insert into question(qmid, qtitle, qcontent,
+		qcreatetime, qlat, qLng, qDetailAddress)
+		values(#{qmid},#{qtitle},#{qcontent}, now(),#{qLat},#{qLng}, #{qDetailAddress})
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		delete from question where
+		qnum=#{qnum}
+	</delete>
+
+	<update id="modify"
+		parameterType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		update question
+		set
+		qtitle=#{qtitle},qcontent=#{qcontent},qmodifywriter=#{qmodifywriter},
+		qmodifytime=NOW()
+		where qnum=#{qnum}
+
+	</update>
+
+	<select id="selectOne"
+		resultType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		select qnum, qtitle, qcontent,qmid, qcreatetime, qLat, qLng, qDetailAddress
+		from question
+		where qnum=#{qnum}
+	</select>
+
+	<!-- 페이징 -->
+	<select id="selectAll"
+		resultType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		select qnum, qtitle, qmid, qcreatetime, qLat, qLng, qDetailAddress
+		from question
+		order by qcreatetime desc
+		limit #{size}
+		offset #{start}
+	</select>
+
+	<!-- 페이징에 필요한 카운트 -->
+	<select id="countAll" resultType="int">
+		select count(*)
+		from question
+		order by qcreatetime
+	</select>
+
+	<!-- 회원이 게시한 글 조회 -->
+	<select id="findByMyQuestion"
+		resultType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		select qnum, qtitle,qmid, qcreatetime, qLat, qLng, qDetailAddress
+		from question
+		where qmid=#{qmid}
+		order by qcreatetime
+	</select>
+</mapper>

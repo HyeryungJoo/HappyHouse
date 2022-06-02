@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.happyhouse.model.mapper.NoticeMapper">
+	<insert id="insert"
+		parameterType="com.ssafy.happyhouse.model.dto.NoticeDto">
+		insert into notice(aid, ntitle, ncontent, ncreatetime)
+		value (#{aid},#{ntitle},#{ncontent},now())
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		delete from notice where
+		nnum=#{nnum}
+	</delete>
+
+	<update id="modify"
+		parameterType="com.ssafy.happyhouse.model.dto.NoticeDto">
+		update notice set
+		ntitle=#{ntitle},ncontent=#{ncontent},nmodifywriter=#{nmodifywriter},
+		nmodifytime=NOW()
+		where nnum=#{nnum}
+	</update>
+
+	<select id="selectOne"
+		resultType="com.ssafy.happyhouse.model.dto.NoticeDto">
+		select aid, nnum, ntitle, ncontent, ncreatetime from notice
+		where
+		nnum=#{nnum}
+	</select>
+
+	<!-- 페이징 -->
+	<select id="selectAll"
+		resultType="com.ssafy.happyhouse.model.dto.NoticeDto">
+		select aid, nnum, ntitle, ncontent, ncreatetime
+		from notice
+		order by ncreatetime desc
+		limit #{size}
+		offset #{start}
+	</select>
+
+	<!-- 페이징에 필요한 카운트 -->
+	<select id="countAll" resultType="int">
+		select count(*)
+		from notice
+		order by ncreatetime
+	</select>
+
+
+</mapper>

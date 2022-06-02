@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.happyhouse.model.mapper.QuestionMapper">
+	<insert id="insert"
+		parameterType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		insert into question(qmid, qtitle, qcontent, qdong)
+		values(#{qmid},#{qtitle},#{qcontent},#{qdong})
+	</insert>
+
+	<delete id="delete" parameterType="int">
+		delete from question where
+		qnum=#{qnum}
+	</delete>
+
+	<update id="modify"
+		parameterType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		update question set qtitle=#{qtitle},
+		qcontent=#{qcontent},qdong=#{qdong},qmodifywriter=#{qmodifywriter} where qnum=#{qnum}
+	</update>
+
+	<select id="selectAll"
+		resultType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		select qtitle, qdong,qmid, qcreatetime from question order by qcreatetime
+		desc
+	</select>
+
+	<select id="search"
+		resultType="com.ssafy.happyhouse.model.dto.QuestionDto">
+		select qtitle, qdong,qmid, qcreatetime from question where qdong=#{qdong}
+		order by qcreatetime desc
+	</select>
+</mapper>
