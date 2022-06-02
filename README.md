@@ -21,7 +21,7 @@
   <img src="https://img.shields.io/badge/Library-Bootstrap-%237952B3?logo=bootstrap" />
   <img src="https://img.shields.io/badge/Library-Bootstrap--Vue-purple?logo=vuetify&logoColor=purple" />
   <img src="https://img.shields.io/badge/Language-Java-red?logo=Java" />
-  <img src="https://img.shields.io/badge/Database-MySQL-%234479A1?logo=MySQL" /><br/>
+  <img src="https://img.shields.io/badge/Database-MySQL-%234479A1?logo=MySQL" />
   <img src="https://img.shields.io/badge/Framework-Vue-%234FC08D?logo=Vue.js" />
   <img src="https://img.shields.io/badge/Framework-MyBatis-lightgrey" />
   <img src="https://img.shields.io/badge/Framework-SpringFramework-%236DB33F?logo=Spring" />
