@@ -18,11 +18,11 @@
   <img src="https://img.shields.io/badge/API-Kakao%20Map-yellow" />
   <img src="https://img.shields.io/badge/API-Naver%20News-brightgreen" />
   <img src="https://img.shields.io/badge/API-DATA.GO.KR-blue" />
-  <img src="https://img.shields.io/badge/Library-Bootstrap-%237952B3?logo=bootstrap" /><br/>
+  <img src="https://img.shields.io/badge/Library-Bootstrap-%237952B3?logo=bootstrap" />
   <img src="https://img.shields.io/badge/Library-Bootstrap--Vue-purple?logo=vuetify&logoColor=purple" />
   <img src="https://img.shields.io/badge/Language-Java-red?logo=Java" />
   <img src="https://img.shields.io/badge/Database-MySQL-%234479A1?logo=MySQL" />
-  <img src="https://img.shields.io/badge/Framework-Vue-%234FC08D?logo=Vue.js" /><br/>
+  <img src="https://img.shields.io/badge/Framework-Vue-%234FC08D?logo=Vue.js" />
   <img src="https://img.shields.io/badge/Framework-MyBatis-lightgrey" />
   <img src="https://img.shields.io/badge/Framework-SpringFramework-%236DB33F?logo=Spring" />
   <img src="https://img.shields.io/badge/Framework-SpringBoot-%236DB33F?logo=Spring Boot" />
